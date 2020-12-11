@@ -1,9 +1,12 @@
+require: rubocop-rspec
+
 AllCops:
   Exclude:
     - 'db/**/*'
     - 'config/**/*'
     - 'script/**/*'
     - 'bin/*'
+    - 'Guardfile'
 
 Style/StringLiterals:
   Enabled: true
@@ -21,3 +24,9 @@ Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
   EnforcedStyle: no_space
   EnforcedStyleForEmptyBraces: no_space
+
+Metrics/BlockLength:
+  Enabled: false
+
+RSpec/LetSetup:
+  Enabled: false

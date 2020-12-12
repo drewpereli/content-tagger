@@ -1,11 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::API
-  # before_action :authorized
-
-  def encode_token(payload)
-    JWT.encode(payload, Rails.application.secrets.secret_key_base)
-  end
+  before_action :ensure_authenticated_user
 
   def auth_header
     # { Authorization: 'Bearer <token>' }
@@ -35,7 +31,7 @@ class ApplicationController < ActionController::API
     !!logged_in_user
   end
 
-  def authorized
+  def ensure_authenticated_user
     render json: {message: "Please log in"}, status: :unauthorized unless logged_in?
   end
 end

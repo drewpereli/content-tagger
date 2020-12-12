@@ -31,6 +31,19 @@ RSpec.describe "Users", type: :request do
       it "doesn't create a user" do expect(User.count).to be(0) end
     end
 
+    # region invalid password tests
+    %w[a abcdefghijklmnop Abcdefghijklmnop abcdefghijklmnop1 Abc2].each do |password|
+      context "when password is invalid: #{password}" do
+        let(:params) { {email: "me@gmail.com", password: password, password_confirmation: password} }
+
+        before { post_users }
+
+        it "responds with a 422" do expect(response.status).to be(422) end
+        it "doesn't create a user" do expect(User.count).to be(0) end
+      end
+    end
+    # endregion
+
     context "when email is already taken" do
       let(:params) { {email: "me@gmail.com", password: "Password123", password_confirmation: "Password123"} }
 

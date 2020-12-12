@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe "Users", type: :request do
   describe "POST users" do
-    let(:post_users) { post "/users", params: params }
+    let(:post_users) { post "/users", params: {user: params} }
     let(:parsed_body) { JSON.parse(response.body) }
 
     context "when the params are valid" do

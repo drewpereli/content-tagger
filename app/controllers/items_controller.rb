@@ -5,13 +5,13 @@ class ItemsController < ApplicationController
 
   # GET /items
   def index
-    @items = Item.where(user: @user)
+    @items = Item.where(user: current_user)
     render json: @items
   end
 
   # POST /items
   def create
-    @item = Item.new(item_params.merge(user: @user))
+    @item = Item.new(item_params.merge(user: current_user))
 
     if @item.save
       render json: @item, status: :created

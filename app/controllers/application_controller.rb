@@ -20,15 +20,15 @@ class ApplicationController < ActionController::API
     end
   end
 
-  def logged_in_user
+  def current_user
     return unless decoded_token
 
     user_id = decoded_token[0]["user_id"]
-    @user = User.find_by(id: user_id)
+    User.find_by(id: user_id)
   end
 
   def logged_in?
-    !!logged_in_user
+    !!current_user
   end
 
   def ensure_authenticated_user

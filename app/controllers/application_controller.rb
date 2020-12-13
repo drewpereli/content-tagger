@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::API
+  include Pundit
   before_action :ensure_authenticated_user
+  after_action :verify_authorized, except: :index
+  after_action :verify_policy_scoped, only: :index
 
   def auth_header
     # { Authorization: 'Bearer <token>' }

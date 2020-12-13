@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   skip_before_action :ensure_authenticated_user
 
   def create
+    skip_authorization
     @user = User.create(create_params)
     if @user.valid?
       token = @user.token
@@ -14,6 +15,7 @@ class UsersController < ApplicationController
   end
 
   def login
+    skip_authorization
     @user = User.find_by(email: login_params[:email])
 
     if @user&.authenticate(login_params[:password])

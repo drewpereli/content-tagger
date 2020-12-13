@@ -3,16 +3,16 @@
 require "rails_helper"
 
 RSpec.describe "/items", type: :request do
-  let(:user) { User.create(email: "me@gmail.com", password: "Password123", password_confirmation: "Password123") }
-  let(:other_user) { User.create(email: "other@gmail.com", password: "Password123", password_confirmation: "Password123") }
+  let(:user) { create(:user) }
+  let(:other_user) { create(:user) }
   let(:valid_headers) { {"Authorization" => "Bearer #{user.token}"} }
   let(:response_body) { JSON.parse(response.body) }
 
   describe "GET /index" do
-    let!(:user_item_1) { Item.create(content: "foo", user: user) }
-    let!(:user_item_2) { Item.create(content: "bar", user: user) }
-    let!(:other_user_item_1) { Item.create(content: "foo", user: other_user) }
-    let!(:other_user_item_2) { Item.create(content: "bar", user: other_user) }
+    let!(:user_item_1) { create(:item, content: "u1 foo", user: user) }
+    let!(:user_item_2) { create(:item, content: "u1 bar", user: user) }
+    let!(:other_user_item_1) { create(:item, content: "u2 foo", user: other_user) }
+    let!(:other_user_item_2) { create(:item, content: "u2 bar", user: other_user) }
 
     before { get "/items", headers: valid_headers, as: :json }
 
@@ -25,12 +25,12 @@ RSpec.describe "/items", type: :request do
 
       expect(response_body["items"][0].slice("id", "content")).to eql({
         "id" => user_item_1.id,
-        "content" => user_item_1.content
+        "content" => "u1 foo"
       })
 
       expect(response_body["items"][1].slice("id", "content")).to eql({
         "id" => user_item_2.id,
-        "content" => user_item_2.content
+        "content" => "u1 bar"
       })
     end
 
@@ -110,7 +110,7 @@ RSpec.describe "/items", type: :request do
 
   describe "DELETE /destroy" do
     let(:delete_destroy) { delete "/items/#{item.id}", headers: valid_headers, as: :json }
-    let!(:item) { Item.create(content: "foo", user: user) }
+    let!(:item) { create(:item, user: user) }
 
     it "destroys the requested item" do
       expect { delete_destroy }.to change(Item, :count).by(-1)

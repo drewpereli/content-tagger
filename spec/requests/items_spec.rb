@@ -56,7 +56,11 @@ RSpec.describe "/items", type: :request do
         expect(response).to have_http_status(:created)
 
         item = Item.first
-        expect(response_body["item"]).to eql({"id" => item.id, "content" => item.content, "content_type" => item.content_type})
+        expect(response_body["item"]).to eql({
+          "id" => item.id,
+          "content" => item.content,
+          "content_type" => item.content_type
+        })
       end
     end
 

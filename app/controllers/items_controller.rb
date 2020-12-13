@@ -5,12 +5,14 @@ class ItemsController < ApplicationController
 
   # GET /items
   def index
-    @items = Item.where(user: current_user)
+    @items = policy_scope(Item)
     render json: @items
   end
 
   # POST /items
   def create
+    authorize(Item)
+
     @item = Item.new(item_params.merge(user: current_user))
 
     if @item.save
@@ -31,6 +33,7 @@ class ItemsController < ApplicationController
 
   # DELETE /items/1
   def destroy
+    authorize(@item)
     if @item.destroy
       head :no_content
     else

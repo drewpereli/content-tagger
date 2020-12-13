@@ -30,3 +30,15 @@ Metrics/BlockLength:
 
 RSpec/LetSetup:
   Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+Layout/FirstHashElementIndentation:
+  Enabled: false

@@ -42,7 +42,7 @@ RSpec.describe "/items", type: :request do
   end
 
   describe "POST /create" do
-    let(:post_create) { post "/items", params: {item: params}, headers: valid_headers, as: :json }
+    let(:post_create) { post "/items", params: {item: params}, headers: valid_headers }
 
     context "with valid parameters" do
       let(:params) { {content: "foo"} }
@@ -74,6 +74,19 @@ RSpec.describe "/items", type: :request do
       it "renders a JSON response with errors for the new item" do
         post_create
         expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+
+    context "with file upload" do
+      let(:params) { {content: "foo", file: file} }
+      let(:file) { fixture_file_upload("my-img.jpg", "image/jpg") }
+
+      it "creates a blob " do
+        expect { post_create }.to change { ActiveStorage::Blob.count }.from(0).to(1)
+      end
+
+      it "creates a new Item" do
+        expect { post_create }.to change(Item, :count).by(1)
       end
     end
   end
@@ -117,7 +130,7 @@ RSpec.describe "/items", type: :request do
     let!(:item) { create(:item, user: user) }
 
     it "destroys the requested item" do
-      expect { delete_destroy }.to change(Item, :count).by(-1)
+      expect { delete_destroy }.to change(Item, :count).from(1).to(0)
     end
   end
 end

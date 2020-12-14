@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_13_201332) do
+ActiveRecord::Schema.define(version: 2020_12_14_062223) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 2020_12_13_201332) do
   end
 
   create_table "items", force: :cascade do |t|
-    t.text "content", null: false
+    t.text "content"
     t.integer "content_type", default: 0, null: false
     t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false

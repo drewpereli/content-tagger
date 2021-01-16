@@ -6,7 +6,7 @@ class Item < ApplicationRecord
   belongs_to :user
   has_one_attached :file
 
-  enum content_type: %i[plain_text link image video]
+  enum content_type: %i[text link file]
 
   validates :user_id, presence: true
 
